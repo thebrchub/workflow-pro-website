@@ -11,6 +11,17 @@ import {
 /* -------------------------------------------------------------------------- */
 
 const globalStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+  }
+
   @keyframes infinite-scroll {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
@@ -367,7 +378,7 @@ function FeatureGrid({ featureDeck, visibleSections }) {
 
           <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 tracking-tight">
             How our platform <br className="hidden md:block" />
-            makes your <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">workflow easier</span>
+            makes your <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">workflow easier</span>
           </h2>
           
           <p className="text-lg text-gray-400 max-w-2xl font-light">
