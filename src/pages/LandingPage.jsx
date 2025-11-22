@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { 
   Zap, Shield, BarChart3, Users, Clock, Globe, 
   Menu, X, ChevronRight, ArrowRight, Check, 
@@ -7,21 +7,105 @@ import {
 } from 'lucide-react';
 
 /* -------------------------------------------------------------------------- */
+/* GLOBAL STYLES (For Animation)               */
+/* -------------------------------------------------------------------------- */
+
+const globalStyles = `
+  @keyframes infinite-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-infinite-scroll {
+    animation: infinite-scroll 30s linear infinite;
+  }
+`;
+
+/* -------------------------------------------------------------------------- */
 /* COMPONENTS                                  */
 /* -------------------------------------------------------------------------- */
 
-/* --- Background Effects --- */
+/* --- NEW: Canvas Starfield Component --- */
+function Starfield() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationFrameId;
+    let stars = [];
+    const numStars = 150;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    // Set canvas size
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize(); // init
+
+    // Initialize stars
+    for (let i = 0; i < numStars; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.2,
+        alpha: Math.random(),
+        speed: Math.random() * 0.2 + 0.05
+      });
+    }
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Update and draw stars
+      stars.forEach(star => {
+        star.y -= star.speed; // Move up slowly
+        // Reset if off screen
+        if (star.y < 0) {
+          star.y = canvas.height;
+          star.x = Math.random() * canvas.width;
+        }
+
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha * 0.5})`; // Subtle opacity
+        ctx.fill();
+      });
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none" />;
+}
+
+/* --- Background Effects (Updated to include Canvas) --- */
 function BackgroundEffects() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* The Canvas Starfield */}
+      <Starfield />
+
       {/* Top Left "Spotlight" Beam */}
       <div className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-purple-900/20 blur-[120px] mix-blend-screen" />
       {/* Pink Accent Glow (Top Left) */}
       <div className="absolute top-[5%] left-[10%] w-[20vw] h-[20vw] rounded-full bg-pink-600/20 blur-[100px]" />
       {/* Center/Bottom Glow for the "Arc" area */}
       <div className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[50vw] h-[30vw] bg-fuchsia-900/10 blur-[100px] rounded-full" />
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+      {/* Grid Pattern overlay */}
+      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
     </div>
   );
 }
@@ -96,6 +180,10 @@ function Nav({ mobileOpen, setMobileOpen, scrolled, onNavClick }) {
 
 /* --- Hero Section --- */
 function Hero({ calculateSavings, onCTAClick }) {
+  // Logos configuration
+  const logoFiles = [7, 8, 9, 10, 11, 12];
+  const scrollingLogos = [...logoFiles, ...logoFiles, ...logoFiles]; 
+
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
       {/* Background Glow (The Pink Arch) */}
@@ -131,7 +219,7 @@ function Hero({ calculateSavings, onCTAClick }) {
 
         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed mb-10">
           Streamline your business's financial management with our intuitive, 
-          scalable SaaS platform. Designed for Indian enterprises to automate 70% of admin.
+          scalable SaaS platform. Designed for U.S. enterprises to automate 70% of admin.
         </p>
 
         {/* CTA Button */}
@@ -219,18 +307,38 @@ function Hero({ calculateSavings, onCTAClick }) {
           <div className="absolute -bottom-10 left-0 right-0 h-20 bg-fuchsia-500/30 blur-[60px] rounded-full mx-10"></div>
         </div>
 
-        {/* Logos Section */}
-        <div className="mt-32 flex flex-col items-center gap-6">
-          <div className="px-4 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-gray-400 backdrop-blur-sm">
+        {/* --- Infinite Moving Logos Section --- */}
+        {/* --- Infinite Moving Logos Section (UPDATED) --- */}
+        <div className="mt-32 flex flex-col items-center gap-8 w-full overflow-hidden">
+          <div className="px-4 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-gray-400 backdrop-blur-sm z-10 relative">
             Trusted over 2k+ companies
           </div>
-          <div className="flex flex-wrap justify-center gap-4 opacity-80">
-             {['Logoipsum', 'Logoipsum', 'Logoipsum', 'Logoipsum'].map((logo, i) => (
-                <div key={i} className="flex items-center gap-2 px-6 py-2 rounded-full border border-white/10 bg-black/20 hover:bg-white/5 transition-colors">
-                   <div className="w-4 h-4 rounded-full bg-white/20"></div>
-                   <span className="text-sm font-medium text-white/70">{logo}</span>
+          
+          {/* Marquee Container */}
+          <div className="relative flex overflow-x-hidden w-full max-w-6xl mask-linear-fade">
+            {/* Gradient Masks for Fade Effect */}
+            <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[#050505] to-transparent z-20"></div>
+            <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-[#050505] to-transparent z-20"></div>
+
+            <div className="flex gap-12 animate-infinite-scroll whitespace-nowrap py-4">
+              {scrollingLogos.map((logoNum, i) => (
+                <div 
+                  key={i} 
+                  className="flex items-center justify-center px-8 py-4 rounded-full border border-white/10 bg-black/20 hover:bg-white/5 transition-colors min-w-max"
+                >
+                   <img 
+                      src={`/logo/logos/${logoNum}.png`} 
+                      alt={`Partner ${logoNum}`} 
+                      className="h-16 w-auto opacity-80 hover:opacity-100 transition-opacity" 
+                      onError={(e) => {
+                        // Helps debug if the path is still wrong, logs to console instead of breaking layout
+                        console.error(`Could not load image: ${e.target.src}`);
+                        // e.target.style.display = 'none'; // Optional: hide broken images
+                      }} 
+                   />
                 </div>
-             ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -259,7 +367,7 @@ function FeatureGrid({ featureDeck, visibleSections }) {
 
           <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 tracking-tight">
             How our platform <br className="hidden md:block" />
-            makes your <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">workflow easier</span>
+            makes your <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">workflow easier</span>
           </h2>
           
           <p className="text-lg text-gray-400 max-w-2xl font-light">
@@ -378,6 +486,7 @@ function Pricing({ pricingPlans, pricingToggle, setPricingToggle, employeeCount,
         </div>
 
         {/* Pricing Cards */}
+        {/* Pricing Cards */}
         <div className="grid md:grid-cols-3 gap-8">
           {pricingPlans.map((plan, i) => (
             <div key={i} className={`relative group flex flex-col p-8 rounded-3xl border transition-all duration-300 ${plan.popular ? 'bg-white/[0.08] border-purple-500/50 shadow-[0_0_50px_rgba(168,85,247,0.15)] scale-105 z-10' : 'bg-white/[0.02] border-white/10 hover:border-white/20 hover:bg-white/[0.04]'}`}>
@@ -457,7 +566,7 @@ function Footer() {
           which is a joint venture company with collaboration of <strong>Blazing Render Creation Hub LLP</strong> and <strong>LVCLegalVala Consultancy LLP</strong>.
         </p>
         <p className="text-gray-600 text-xs">
-          © 2024 Orvexa Softtech Pvt Ltd. All rights reserved.
+          © 2025 Orvexa Softtech Pvt Ltd. All rights reserved.
         </p>
       </div>
     </footer>
@@ -477,6 +586,16 @@ export default function LandingPage() {
   const [employeeCount, setEmployeeCount] = useState(200);
   const [visibleSections, setVisibleSections] = useState(new Set());
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', phone: '', message: '' });
+
+  // Inject styles for animation
+  useEffect(() => {
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = globalStyles;
+    document.head.appendChild(styleSheet);
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
 
   // Scroll handler for navbar and animations
   useEffect(() => {
