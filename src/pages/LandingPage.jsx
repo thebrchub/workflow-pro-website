@@ -1,649 +1,599 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, CheckCircle, Users, Clock, FileText, TrendingUp, Shield, Zap, ArrowRight, Mail, Phone, MapPin, Send } from 'lucide-react';
+import { 
+  Zap, Shield, BarChart3, Users, Clock, Globe, 
+  Menu, X, ChevronRight, ArrowRight, Check, 
+  CreditCard, TrendingUp, Activity, CheckCircle, Star,
+  Mail, Phone, MapPin, Twitter, Linkedin, Github
+} from 'lucide-react';
+
+/* -------------------------------------------------------------------------- */
+/* COMPONENTS                                  */
+/* -------------------------------------------------------------------------- */
+
+/* --- Background Effects --- */
+function BackgroundEffects() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Top Left "Spotlight" Beam */}
+      <div className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-purple-900/20 blur-[120px] mix-blend-screen" />
+      {/* Pink Accent Glow (Top Left) */}
+      <div className="absolute top-[5%] left-[10%] w-[20vw] h-[20vw] rounded-full bg-pink-600/20 blur-[100px]" />
+      {/* Center/Bottom Glow for the "Arc" area */}
+      <div className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[50vw] h-[30vw] bg-fuchsia-900/10 blur-[100px] rounded-full" />
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+    </div>
+  );
+}
+
+/* --- Navigation --- */
+function Nav({ mobileOpen, setMobileOpen, scrolled, onNavClick }) {
+  const links = [
+    { name: 'Features', id: 'features' },
+    { name: 'Testimonials', id: 'testimonials' },
+    { name: 'Pricing', id: 'pricing' },
+    { name: 'Contact', id: 'contact' },
+  ];
+
+  return (
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${scrolled ? 'bg-[#050505]/80 backdrop-blur-md border-white/5 py-4' : 'bg-transparent border-transparent py-6'}`}>
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        
+        {/* Logo */}
+        <div className="flex items-center gap-2 font-bold text-xl tracking-tighter text-white">
+          {/* <div className="w-8 h-8 bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-purple-500/30">
+            <Zap size={18} fill="currentColor" />
+          </div> */}
+          Quantacel
+        </div>
+
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-8">
+          {links.map(link => (
+            <button 
+              key={link.name}
+              onClick={(e) => onNavClick(e, link.id)} 
+              className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
+            >
+              {link.name}
+            </button>
+          ))}
+        </div>
+
+        {/* CTA Button */}
+        <div className="hidden md:block">
+          <button className="bg-white text-black px-5 py-2 rounded-full text-sm font-semibold hover:bg-gray-200 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+            Free Trial
+          </button>
+        </div>
+
+        {/* Mobile Menu Toggle */}
+        <button className="md:hidden text-white" onClick={() => setMobileOpen(!mobileOpen)}>
+          {mobileOpen ? <X /> : <Menu />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {mobileOpen && (
+        <div className="absolute top-full left-0 right-0 bg-[#0A0118] border-b border-white/10 p-6 md:hidden flex flex-col gap-4 shadow-2xl">
+          {links.map(link => (
+            <button 
+              key={link.name}
+              onClick={(e) => onNavClick(e, link.id)} 
+              className="text-left text-gray-300 hover:text-white py-2"
+            >
+              {link.name}
+            </button>
+          ))}
+          <button className="bg-white text-black w-full py-3 rounded-lg font-bold mt-2">
+            Start Free Trial
+          </button>
+        </div>
+      )}
+    </nav>
+  );
+}
+
+/* --- Hero Section --- */
+function Hero({ calculateSavings, onCTAClick }) {
+  return (
+    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+      {/* Background Glow (The Pink Arch) */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-fuchsia-600/20 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+        
+        {/* --- Top Badge with Soft Animated Border Shine --- */}
+        <div className="flex items-center justify-center mb-8">
+          <div className="relative group inline-block">
+            {/* Subtle Outer Glow */}
+            <div className="absolute inset-0 bg-fuchsia-600/20 blur-lg rounded-full opacity-30 group-hover:opacity-50 transition-opacity" />
+            
+            {/* Animated Border Wrapper */}
+            <div className="relative rounded-full p-[1px] overflow-hidden">
+              {/* Soft Spinning Conic Gradient (Reduced opacity for "not harsh" look) */}
+              <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,rgba(217,70,239,0.7)_50%,transparent_100%)] opacity-70" />
+              
+              {/* Badge Content */}
+              <div className="relative flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0A0118] border border-white/5 text-sm text-gray-300 backdrop-blur-xl">
+                <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500 shadow-[0_0_10px_#d946ef]"></span>
+                <span className="tracking-wide">Simplify your HR workflow</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Headings */}
+        <h1 className="text-5xl md:text-7xl font-medium tracking-tight text-white mb-6 drop-shadow-2xl">
+          Enhance your <span className="text-transparent bg-clip-text bg-gradient-to-br from-white to-white/50">financial control</span>
+          <br /> with AI-Driven HR
+        </h1>
+
+        <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed mb-10">
+          Streamline your business's financial management with our intuitive, 
+          scalable SaaS platform. Designed for Indian enterprises to automate 70% of admin.
+        </p>
+
+        {/* CTA Button */}
+        <div className="flex flex-col items-center gap-4 mb-20">
+          <button 
+            onClick={onCTAClick}
+            className="bg-white text-black hover:bg-gray-200 transition-all px-8 py-3.5 rounded-full font-semibold flex items-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+          >
+            Get started <ArrowRight size={18} />
+          </button>
+          <p className="text-xs text-gray-500">No credit card required • 14-day free trial</p>
+        </div>
+
+        {/* The "Glass" Dashboard Visual */}
+        <div className="relative max-w-4xl mx-auto mt-12 perspective-1000">
+          
+          {/* Left Floating Card */}
+          <div className="hidden md:block absolute top-10 -left-12 z-20 animate-[bounce_6s_infinite]">
+            <div className="bg-black/60 border border-white/10 backdrop-blur-xl p-4 rounded-[32px] shadow-2xl w-64">
+              <div className="flex justify-between items-center mb-4">
+                <div className="p-2 bg-white/5 rounded-xl"><CreditCard size={20} className="text-pink-500" /></div>
+                <span className="text-xs text-gray-400">Virtual Card</span>
+              </div>
+              <div className="text-left">
+                <div className="text-gray-400 text-xs mb-1">Monthly Savings</div>
+                <div className="text-xl font-bold text-white">₹{calculateSavings().toLocaleString()}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Floating Card */}
+          <div className="hidden md:block absolute top-20 -right-12 z-20 animate-[bounce_7s_infinite]">
+             <div className="bg-black/60 border border-white/10 backdrop-blur-xl p-4 rounded-[32px] shadow-2xl w-64">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                  <span className="text-sm font-medium text-white">Cashflow</span>
+                </div>
+                <ArrowRight size={14} className="text-gray-500" />
+              </div>
+              <div className="text-2xl font-bold text-white text-left mt-2">$1,570,090.00</div>
+              <div className="mt-2 w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                <div className="bg-green-500 w-[70%] h-full rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Center Main Dashboard */}
+          <div className="relative z-10 bg-gradient-to-b from-white/10 to-black/40 border border-white/10 p-2 rounded-[40px] backdrop-blur-2xl shadow-2xl">
+            <div className="bg-black rounded-[32px] overflow-hidden border border-white/5 relative aspect-[16/10] md:aspect-[2/1]">
+              {/* Header of App */}
+              <div className="absolute top-0 left-0 right-0 h-16 border-b border-white/10 flex items-center justify-between px-6 bg-white/5">
+                <div className="flex items-center gap-3">
+                   <div className="w-8 h-8 rounded-full bg-pink-600 flex items-center justify-center"><Activity size={16} /></div>
+                   <div className="text-sm font-medium text-white">Total Balance</div>
+                </div>
+                <ArrowRight size={16} className="text-gray-500"/>
+              </div>
+              {/* Body of App */}
+              <div className="p-8 pt-24 text-left">
+                <div className="text-sm text-gray-400 mb-2">Available Balance</div>
+                <div className="text-4xl md:text-5xl font-bold text-white tracking-tight">$14,090,090.00</div>
+                <div className="inline-flex items-center gap-1 mt-4 px-2 py-1 rounded bg-green-500/20 text-green-400 text-xs font-medium">
+                  <TrendingUp size={12} /> +12.5% this month
+                </div>
+                <div className="mt-12 space-y-3">
+                   {[1,2].map((i) => (
+                     <div key={i} className="flex items-center justify-between p-3 rounded-[20px] bg-white/5 border border-white/5">
+                        <div className="flex items-center gap-3">
+                           <div className="w-8 h-8 rounded-full bg-white/10"></div>
+                           <div className="space-y-1">
+                             <div className="w-24 h-2 bg-white/20 rounded"></div>
+                             <div className="w-16 h-2 bg-white/10 rounded"></div>
+                           </div>
+                        </div>
+                        <div className="text-white font-medium">$5,200.00</div>
+                     </div>
+                   ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Glow Under Dashboard */}
+          <div className="absolute -bottom-10 left-0 right-0 h-20 bg-fuchsia-500/30 blur-[60px] rounded-full mx-10"></div>
+        </div>
+
+        {/* Logos Section */}
+        <div className="mt-32 flex flex-col items-center gap-6">
+          <div className="px-4 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-gray-400 backdrop-blur-sm">
+            Trusted over 2k+ companies
+          </div>
+          <div className="flex flex-wrap justify-center gap-4 opacity-80">
+             {['Logoipsum', 'Logoipsum', 'Logoipsum', 'Logoipsum'].map((logo, i) => (
+                <div key={i} className="flex items-center gap-2 px-6 py-2 rounded-full border border-white/10 bg-black/20 hover:bg-white/5 transition-colors">
+                   <div className="w-4 h-4 rounded-full bg-white/20"></div>
+                   <span className="text-sm font-medium text-white/70">{logo}</span>
+                </div>
+             ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* --- Feature Grid --- */
+function FeatureGrid({ featureDeck, visibleSections }) {
+  return (
+    <section 
+      id="features" 
+      data-section 
+      className={`py-24 px-6 lg:px-8 relative z-10 transition-all duration-1000 ${visibleSections.has('features') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+    >
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header */}
+        <div className="flex flex-col items-center text-center mb-16">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="h-[1px] w-12 md:w-24 bg-gradient-to-r from-transparent to-white/20"></div>
+            <div className="px-4 py-1 rounded-full border border-white/10 bg-white/5 text-xs font-medium text-gray-400 uppercase tracking-wider shadow-inner">
+              Our workflow
+            </div>
+            <div className="h-[1px] w-12 md:w-24 bg-gradient-to-l from-transparent to-white/20"></div>
+          </div>
+
+          <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 tracking-tight">
+            How our platform <br className="hidden md:block" />
+            makes your <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">workflow easier</span>
+          </h2>
+          
+          <p className="text-lg text-gray-400 max-w-2xl font-light">
+             Eliminate manual bottlenecks with autonomous agents that handle the heavy lifting, keeping your data audit-ready.
+          </p>
+        </div>
+
+        {/* Grid with Soft Spinning Border on Hover */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featureDeck.map((item, i) => (
+            <div 
+              key={i} 
+              className="group relative rounded-[32px] p-[1px] overflow-hidden transition-all duration-300 hover:-translate-y-1"
+            >
+              {/* Spinning Gradient Background (Revealed on Hover, Softened) */}
+              <div className="absolute inset-[-1000%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,rgba(217,70,239,0.5)_50%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-[spin_4s_linear_infinite] blur-[2px]" />
+              
+              {/* Card Content */}
+              <div className="relative h-full bg-[#0A0118] rounded-[31px] p-8 border border-white/10 group-hover:border-transparent transition-colors duration-300 flex flex-col">
+                
+                {/* Inner Content Glow Effect */}
+                <div className="absolute -right-10 -top-10 w-32 h-32 bg-purple-500/10 blur-[50px] rounded-full group-hover:bg-purple-500/20 transition-all duration-500"></div>
+                
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="w-14 h-14 mb-6 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/5 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <item.icon className="text-white/90 group-hover:text-purple-300 transition-colors" size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-white transition-colors">{item.title}</h3>
+                  <p className="text-sm text-gray-400 leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* --- Testimonials --- */
+function Testimonials({ testimonials, activeTestimonial, setActiveTestimonial }) {
+  return (
+    <section id="testimonials" data-section className="py-24 px-6 relative z-10">
+       <div className="max-w-5xl mx-auto">
+          <div className="bg-white/[0.02] border border-white/5 rounded-[40px] p-10 md:p-16 text-center relative backdrop-blur-sm">
+             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-[#0A0118] border border-white/10 rounded-full flex items-center justify-center text-fuchsia-500 shadow-xl shadow-fuchsia-900/20">
+                <Star fill="currentColor" size={24} />
+             </div>
+             
+             <div className="min-h-[200px] flex flex-col justify-center items-center">
+                <p className="text-2xl md:text-4xl font-medium text-white mb-8 leading-snug">
+                   "{testimonials[activeTestimonial].text}"
+                </p>
+                <div>
+                   <h4 className="text-lg font-semibold text-white">{testimonials[activeTestimonial].name}</h4>
+                   <p className="text-fuchsia-400 text-sm">{testimonials[activeTestimonial].role}</p>
+                </div>
+             </div>
+
+             {/* Dots */}
+             <div className="flex justify-center gap-2 mt-8">
+                {testimonials.map((_, i) => (
+                   <button 
+                     key={i}
+                     onClick={() => setActiveTestimonial(i)}
+                     className={`h-2 rounded-full transition-all duration-300 ${i === activeTestimonial ? 'w-8 bg-fuchsia-500' : 'w-2 bg-white/10'}`}
+                   />
+                ))}
+             </div>
+          </div>
+       </div>
+    </section>
+  );
+}
+
+/* --- Pricing --- */
+function Pricing({ pricingPlans, pricingToggle, setPricingToggle, employeeCount, setEmployeeCount, calculateSavings, visibleSections }) {
+  return (
+    <section 
+      id="pricing" 
+      data-section 
+      className={`py-24 px-6 lg:px-8 relative z-10 transition-all duration-1000 ${visibleSections.has('pricing') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+    >
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col items-center text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 tracking-tight">Simple, transparent pricing</h2>
+          <p className="text-lg text-gray-400 mb-8">Pay for automation, not just headcount.</p>
+          
+          <div className="relative p-1 bg-white/5 border border-white/10 rounded-full backdrop-blur-md flex items-center">
+            <button onClick={() => setPricingToggle('monthly')} className={`relative z-10 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${pricingToggle === 'monthly' ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'text-gray-400 hover:text-white'}`}>Monthly</button>
+            <button onClick={() => setPricingToggle('annual')} className={`relative z-10 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${pricingToggle === 'annual' ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'text-gray-400 hover:text-white'}`}>Annual <span className="text-fuchsia-500 ml-1 text-xs font-bold">-20%</span></button>
+          </div>
+        </div>
+
+        {/* ROI Panel */}
+        <div className="max-w-4xl mx-auto mb-20">
+          <div className="relative bg-gradient-to-b from-white/[0.08] to-white/[0.02] border border-white/10 rounded-[32px] p-8 md:p-10 backdrop-blur-xl overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600/20 blur-[100px] rounded-full pointer-events-none"></div>
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="w-full md:w-1/2">
+                <label className="flex items-center justify-between text-sm font-medium text-gray-300 mb-4">
+                  <span>Employee Count</span>
+                  <span className="bg-white/10 px-3 py-1 rounded-lg text-white">{employeeCount}</span>
+                </label>
+                <input type="range" min="50" max="1000" step="10" value={employeeCount} onChange={(e) => setEmployeeCount(parseInt(e.target.value, 10))} className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-fuchsia-500 hover:accent-fuchsia-400 transition-all" />
+                <div className="flex justify-between text-xs text-gray-500 mt-2"><span>50</span><span>1000+</span></div>
+              </div>
+              <div className="hidden md:block w-[1px] h-24 bg-gradient-to-b from-transparent via-white/10 to-transparent"></div>
+              <div className="text-center md:text-left">
+                <p className="text-sm text-gray-400 mb-1">Estimated Monthly Savings</p>
+                <p className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-purple-200">₹{calculateSavings().toLocaleString()}</p>
+                <p className="text-xs text-fuchsia-400 mt-2">Based on 1.2hrs saved/employee</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Pricing Cards */}
+        <div className="grid md:grid-cols-3 gap-8">
+          {pricingPlans.map((plan, i) => (
+            <div key={i} className={`relative group flex flex-col p-8 rounded-3xl border transition-all duration-300 ${plan.popular ? 'bg-white/[0.08] border-purple-500/50 shadow-[0_0_50px_rgba(168,85,247,0.15)] scale-105 z-10' : 'bg-white/[0.02] border-white/10 hover:border-white/20 hover:bg-white/[0.04]'}`}>
+              {plan.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-fuchsia-600 to-purple-600 rounded-full text-xs font-bold text-white uppercase tracking-wide shadow-lg">Most Popular</div>}
+              <div className="mb-6">
+                <h3 className="text-xl font-medium text-white mb-2">{plan.name}</h3>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-white tracking-tight">{typeof plan[pricingToggle] === 'number' ? `₹${plan[pricingToggle]}` : plan.monthly}</span>
+                  {typeof plan[pricingToggle] === 'number' && <span className="text-gray-500 text-sm">/user/mo</span>}
+                </div>
+              </div>
+              <ul className="space-y-4 mb-8 flex-1">
+                {plan.features.map((f, fi) => (
+                  <li key={fi} className="flex items-start gap-3 text-sm text-gray-300">
+                    <div className={`mt-1 w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${plan.popular ? 'bg-fuchsia-500/20 text-fuchsia-400' : 'bg-white/10 text-gray-400'}`}><Check size={12} strokeWidth={3} /></div>
+                    <span className="leading-tight">{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <button className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${plan.popular ? 'bg-white text-black hover:bg-gray-200 shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'border border-white/20 text-white hover:bg-white hover:text-black'}`}>{plan.name === 'Enterprise' ? 'Contact Sales' : 'Start Free Trial'}</button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* --- CTA / Contact --- */
+function CTAContact({ formData, setFormData, handleSubmit }) {
+   return (
+     <section id="contact" data-section className="py-24 px-6 relative z-10">
+        <div className="max-w-5xl mx-auto">
+           <div className="relative rounded-[40px] overflow-hidden border border-white/10 bg-[#0A0118]">
+              <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-900/20 to-purple-900/20"></div>
+              <div className="grid md:grid-cols-2 relative z-10">
+                 <div className="p-10 md:p-16 flex flex-col justify-center">
+                    <h2 className="text-4xl font-bold text-white mb-6">Ready to modernize your HR?</h2>
+                    <p className="text-gray-400 mb-8">Join 2,000+ companies automating their workforce management.</p>
+                    <div className="space-y-4">
+                       <div className="flex items-center gap-4 text-gray-300"><Mail size={20} className="text-fuchsia-500"/> <span>hello@quantacel.ai</span></div>
+                       <div className="flex items-center gap-4 text-gray-300"><Phone size={20} className="text-fuchsia-500"/> <span>+1 (555) 123-4567</span></div>
+                       <div className="flex items-center gap-4 text-gray-300"><MapPin size={20} className="text-fuchsia-500"/> <span>San Francisco, CA</span></div>
+                    </div>
+                 </div>
+                 
+                 <div className="p-10 md:p-16 bg-white/5 backdrop-blur-sm border-l border-white/10">
+                    <div className="space-y-4">
+                       <div className="grid grid-cols-2 gap-4">
+                          <input type="text" placeholder="First Name" className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 transition-colors" value={formData.firstName} onChange={e=>setFormData({...formData, firstName:e.target.value})} />
+                          <input type="text" placeholder="Last Name" className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 transition-colors" value={formData.lastName} onChange={e=>setFormData({...formData, lastName:e.target.value})} />
+                       </div>
+                       <input type="email" placeholder="Work Email" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 transition-colors" value={formData.email} onChange={e=>setFormData({...formData, email:e.target.value})} />
+                       <button onClick={handleSubmit} className="w-full bg-white text-black py-3 rounded-xl font-bold hover:bg-gray-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.2)]">Request Demo</button>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </section>
+   );
+}
+
+/* --- Footer --- */
+function Footer() {
+  return (
+    <footer className="border-t border-white/10 bg-[#020202] py-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center gap-6">
+        <div className="flex items-center gap-2 font-bold text-xl text-white">
+          {/* <div className="w-8 h-8 bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-purple-500/20">
+            <Zap size={18} fill="currentColor" />
+          </div> */}
+          Quantacel
+        </div>
+        <p className="text-gray-500 text-sm max-w-2xl leading-relaxed">
+          Quantacel is AI driven HRMS software made by <strong>Orvexa Softtech Private Limited</strong>, 
+          which is a joint venture company with collaboration of <strong>Blazing Render Creation Hub LLP</strong> and <strong>LVCLegalVala Consultancy LLP</strong>.
+        </p>
+        <p className="text-gray-600 text-xs">
+          © 2024 Orvexa Softtech Pvt Ltd. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* MAIN PAGE                                   */
+/* -------------------------------------------------------------------------- */
 
 export default function LandingPage() {
+  // State management
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [pricingToggle, setPricingToggle] = useState('monthly');
+  const [employeeCount, setEmployeeCount] = useState(200);
   const [visibleSections, setVisibleSections] = useState(new Set());
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    message: ''
-  });
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', phone: '', message: '' });
 
+  // Scroll handler for navbar and animations
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-
-      const sections = document.querySelectorAll('[data-animate]');
+      setScrolled(window.scrollY > 20);
+      const sections = document.querySelectorAll('[data-section]');
       sections.forEach(section => {
         const rect = section.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight * 0.8;
-        if (isVisible) {
+        if (rect.top < window.innerHeight * 0.8) {
           setVisibleSections(prev => new Set([...prev, section.id]));
         }
       });
     };
-
     window.addEventListener('scroll', handleScroll);
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const smoothScroll = (e, targetId) => {
-    e.preventDefault();
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setMobileMenuOpen(false);
+  // Testimonial auto-rotation
+  useEffect(() => {
+    const interval = setInterval(() => setActiveTestimonial(prev => (prev + 1) % 3), 6000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Calculators & Handlers
+  const calculateSavings = () => {
+    const hrsSavedPerEmployee = 1.2;
+    const avgHRCostPerHour = 500;
+    return Math.round(Number(employeeCount) * hrsSavedPerEmployee * avgHRCostPerHour);
+  };
+
+  const handleSubmit = () => {
+    if (formData.firstName && formData.email) {
+      alert('Thanks — demo request received');
+      setFormData({ firstName: '', lastName: '', email: '', phone: '', message: '' });
     }
   };
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
+  const onNavClick = (e, targetId) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Thank you! We will get back to you soon.');
-    setFormData({ name: '', email: '', company: '', message: '' });
+    document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
+    setMobileMenuOpen(false);
   };
 
-  const features = [
-    {
-      icon: Clock,
-      title: 'Smart Attendance Tracking',
-      description: 'Real-time attendance with multiple check-in methods including biometric, GPS, and facial recognition'
-    },
-    {
-      icon: Users,
-      title: 'Employee Management',
-      description: 'Comprehensive employee profiles, hierarchies, and organizational structure management'
-    },
-    {
-      icon: FileText,
-      title: 'Automated Payroll',
-      description: 'Generate accurate payslips with automated calculations, deductions, and tax compliance'
-    },
-    {
-      icon: TrendingUp,
-      title: 'Analytics & Reports',
-      description: 'Powerful insights with customizable reports and real-time dashboards for better decisions'
-    },
-    {
-      icon: Shield,
-      title: 'Secure & Compliant',
-      description: 'Bank-grade security with complete data encryption and compliance with labor regulations'
-    },
-    {
-      icon: Zap,
-      title: 'Easy Integration',
-      description: 'Seamlessly integrate with your existing tools and systems via our robust API'
-    }
+  // --- DATA OBJECTS ---
+
+  const featureDeck = [
+    { icon: Zap, title: "Instant Payroll", desc: "Process thousands of payments in seconds with zero errors." },
+    { icon: Shield, title: "Compliance Guard", desc: "AI monitors local laws and updates policies automatically." },
+    { icon: BarChart3, title: "Smart Analytics", desc: "Predict turnover and engagement trends before they happen." },
+    { icon: Users, title: "Auto-Onboarding", desc: "Generate contracts and setup accounts without lifting a finger." },
+    { icon: Clock, title: "Time Tracking", desc: "Geo-fenced attendance with biometric verification support." },
+    { icon: Globe, title: "Global Hiring", desc: "Hire anyone, anywhere. We handle the taxes and entities." }
+  ];
+
+  const testimonials = [
+    { name: "Sarah Jenkins", role: "VP of HR, TechFlow", text: "We reduced our admin workload by 85% in just two weeks. It's incredible." },
+    { name: "Michael Chen", role: "Founder, StartScale", text: "The AI candidate shortlisting is better than our manual reviews. Highly recommend." },
+    { name: "Amara Patel", role: "COO, GlobalDynamics", text: "Compliance used to be a nightmare. Now it's completely automated and stress-free." }
   ];
 
   const pricingPlans = [
     {
-      name: 'Free',
-      price: '₹0',
-      period: '/month',
-      description: 'Perfect for startups testing the waters',
-      features: [
-        'Up to 10 employees',
-        'Basic attendance tracking',
-        'Monthly reports',
-        'Email support',
-        'Mobile app access'
-      ],
-      cta: 'Get Started',
-      highlighted: false
+      name: 'Startup',
+      monthly: 299,
+      annual: 239,
+      features: ['Payroll for up to 50 employees', 'Basic Compliance', 'Email Support', '1 Admin User'],
+      popular: false
     },
     {
-      name: 'Basic',
-      price: '₹999',
-      period: '/month',
-      description: 'Great for small businesses',
-      features: [
-        'Up to 50 employees',
-        'Advanced attendance & leave management',
-        'Payroll processing',
-        'Weekly reports',
-        'Priority email support',
-        'Mobile app access',
-        'Custom branding'
-      ],
-      cta: 'Start Free Trial',
-      highlighted: false
-    },
-    {
-      name: 'Pro',
-      price: '₹2,999',
-      period: '/month',
-      description: 'For growing companies',
-      features: [
-        'Up to 200 employees',
-        'All Basic features',
-        'Advanced analytics & dashboards',
-        'Custom workflows',
-        'API access',
-        'Phone & email support',
-        'Dedicated account manager',
-        'Multi-location support'
-      ],
-      cta: 'Start Free Trial',
-      highlighted: true
+      name: 'Growth',
+      monthly: 599,
+      annual: 479,
+      features: ['Unlimited Employees', 'AI Recruitment', 'Advanced Analytics', '24/7 Priority Support', 'Dedicated Account Manager'],
+      popular: true
     },
     {
       name: 'Enterprise',
-      price: 'Custom',
-      period: '',
-      description: 'Tailored solutions for large organizations',
-      features: [
-        'Unlimited employees',
-        'All Pro features',
-        'Custom integrations',
-        'On-premise deployment option',
-        'White-label solution',
-        '24/7 premium support',
-        'Dedicated infrastructure',
-        'SLA guarantee'
-      ],
-      cta: 'Contact Sales',
-      highlighted: false
+      monthly: 'Custom',
+      annual: 'Custom',
+      features: ['Custom AI Models', 'SLA Guarantee', 'On-premise Options', 'White Labeling', 'API Access'],
+      popular: false
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
-      <style>{`
-        html {
-          scroll-behavior: smooth;
-        }
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        .animate-in {
-          animation: fadeInUp 0.8s ease-out forwards;
-        }
-        .animate-fade {
-          animation: fadeIn 1s ease-out forwards;
-        }
-        .float-animation {
-          animation: float 6s ease-in-out infinite;
-        }
-      `}</style>
+    <div className="min-h-screen relative overflow-hidden bg-[#050505] text-[#F7F6FB] selection:bg-pink-500 selection:text-white font-sans">
+      {/* Background Effects */}
+      <BackgroundEffects />
 
-      {/* Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-slate-900/95 backdrop-blur-lg shadow-2xl' : 'bg-slate-900/80 backdrop-blur-md'
-      }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center space-x-3 group cursor-pointer">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
-                <span className="text-white font-bold text-2xl">W</span>
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                WorkFlow Pro
-              </span>
-            </div>
-            
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" onClick={(e) => smoothScroll(e, 'features')} className="text-gray-200 hover:text-blue-400 transition-colors font-medium">Features</a>
-              <a href="#pricing" onClick={(e) => smoothScroll(e, 'pricing')} className="text-gray-200 hover:text-blue-400 transition-colors font-medium">Pricing</a>
-              <a href="#about" onClick={(e) => smoothScroll(e, 'about')} className="text-gray-200 hover:text-blue-400 transition-colors font-medium">About</a>
-              <a href="#contact" onClick={(e) => smoothScroll(e, 'contact')} className="text-gray-200 hover:text-blue-400 transition-colors font-medium">Contact</a>
-              <button className="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white px-6 py-3 rounded-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 font-semibold">
-                Get Started
-              </button>
-            </div>
-
-            <button 
-              className="md:hidden p-2 hover:bg-white/10 rounded-lg transition text-white"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-slate-900/95 backdrop-blur-lg border-t border-white/10 shadow-xl">
-            <div className="px-4 py-6 space-y-4">
-              <a href="#features" onClick={(e) => smoothScroll(e, 'features')} className="block text-gray-200 hover:text-blue-400 py-2 font-medium">Features</a>
-              <a href="#pricing" onClick={(e) => smoothScroll(e, 'pricing')} className="block text-gray-200 hover:text-blue-400 py-2 font-medium">Pricing</a>
-              <a href="#about" onClick={(e) => smoothScroll(e, 'about')} className="block text-gray-200 hover:text-blue-400 py-2 font-medium">About</a>
-              <a href="#contact" onClick={(e) => smoothScroll(e, 'contact')} className="block text-gray-200 hover:text-blue-400 py-2 font-medium">Contact</a>
-              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl font-semibold">
-                Get Started
-              </button>
-            </div>
-          </div>
-        )}
-      </nav>
-
-      {/* Hero Section */}
-      <section className="pt-36 pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl float-animation"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl float-animation" style={{animationDelay: '2s'}}></div>
-          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl float-animation" style={{animationDelay: '4s'}}></div>
-        </div>
+      <div className="relative z-10">
+        <Nav mobileOpen={mobileMenuOpen} setMobileOpen={setMobileMenuOpen} scrolled={scrolled} onNavClick={onNavClick} />
         
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center">
-            <div className="inline-block mb-6 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white font-semibold text-sm animate-fade border border-white/20 shadow-xl">
-              🚀 Revolutionize Your HR Management
-            </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight animate-in drop-shadow-2xl">
-              Transform Your
-              <br />
-              <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                Workforce Management
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-3xl mx-auto animate-in" style={{animationDelay: '0.2s'}}>
-              Complete HRMS solution from attendance to payslips. Streamline your HR operations and empower your team with WorkFlow Pro.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-in" style={{animationDelay: '0.4s'}}>
-              <button className="group bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white px-10 py-5 rounded-xl text-lg font-bold hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2 shadow-xl">
-                Start Free Trial
-                <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
-              </button>
-              <button className="bg-white/10 backdrop-blur-md border-2 border-white/30 text-white px-10 py-5 rounded-xl text-lg font-bold hover:bg-white/20 transition-all duration-300 hover:scale-105 shadow-xl">
-                Watch Demo
-              </button>
-            </div>
-            <p className="mt-8 text-gray-300 animate-in" style={{animationDelay: '0.6s'}}>
-              No credit card required • 14-day free trial • Cancel anytime
-            </p>
+        <main className="flex flex-col gap-0 md:gap-0">
+          <Hero calculateSavings={calculateSavings} onCTAClick={() => document.getElementById('pricing').scrollIntoView({behavior:'smooth'})} />
+          
+          <div className="flex flex-col gap-0 md:gap-0 w-full">
+             <FeatureGrid featureDeck={featureDeck} visibleSections={visibleSections} />
+             
+             <Testimonials testimonials={testimonials} activeTestimonial={activeTestimonial} setActiveTestimonial={setActiveTestimonial} />
+             
+             <Pricing 
+               pricingPlans={pricingPlans} 
+               pricingToggle={pricingToggle} 
+               setPricingToggle={setPricingToggle} 
+               employeeCount={employeeCount} 
+               setEmployeeCount={setEmployeeCount} 
+               calculateSavings={calculateSavings} 
+               visibleSections={visibleSections} 
+             />
+             
+             <CTAContact formData={formData} setFormData={setFormData} handleSubmit={handleSubmit} />
           </div>
+        </main>
 
-          {/* Hero Visual */}
-          <div className="mt-20 animate-in" style={{animationDelay: '0.8s'}}>
-            <div className="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-8 max-w-6xl mx-auto border border-white/20">
-              <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md rounded-2xl shadow-xl p-8 aspect-video flex items-center justify-center relative overflow-hidden border border-white/20">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10"></div>
-                <div className="text-center relative z-10">
-                  <div className="w-24 h-24 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform">
-                    <Users className="text-white" size={48} />
-                  </div>
-                  <p className="text-white text-xl font-semibold">Interactive Dashboard</p>
-                  <p className="text-gray-300 mt-2">Real-time workforce analytics at your fingertips</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" data-animate className={`py-24 relative overflow-hidden transition-opacity duration-1000 ${visibleSections.has('features') ? 'animate-in' : 'opacity-0'}`}>
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-20">
-            <div className="inline-block mb-4 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white font-semibold text-sm border border-white/20 shadow-xl">
-              ✨ Features
-            </div>
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-2xl">
-              Everything You Need to Manage Your Team
-            </h2>
-            <p className="text-xl text-gray-200 max-w-2xl mx-auto">
-              Powerful features designed to simplify HR operations and boost productivity
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div 
-                key={index}
-                className="group bg-white/10 backdrop-blur-lg p-8 rounded-2xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-white/20 hover:bg-white/15"
-                style={{animationDelay: `${index * 0.1}s`}}
-              >
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                  <feature.icon className="text-white" size={32} />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-blue-300 transition-colors">{feature.title}</h3>
-                <p className="text-gray-300 leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section id="pricing" data-animate className={`py-24 relative overflow-hidden transition-opacity duration-1000 ${visibleSections.has('pricing') ? 'animate-in' : 'opacity-0'}`}>
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-40 left-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-40 right-40 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-20">
-            <div className="inline-block mb-4 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white font-semibold text-sm border border-white/20 shadow-xl">
-              💰 Pricing
-            </div>
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-2xl">
-              Choose Your Perfect Plan
-            </h2>
-            <p className="text-xl text-gray-200 max-w-2xl mx-auto">
-              Flexible pricing for businesses of all sizes. Start free and scale as you grow.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {pricingPlans.map((plan, index) => (
-              <div 
-                key={index}
-                className={`group bg-white/10 backdrop-blur-lg rounded-3xl shadow-xl overflow-hidden transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-2 border border-white/20 hover:bg-white/15 ${
-                  plan.highlighted ? 'ring-4 ring-blue-500 scale-105 bg-white/15' : ''
-                }`}
-                style={{animationDelay: `${index * 0.1}s`}}
-              >
-                {plan.highlighted && (
-                  <div className="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white text-center py-3 text-sm font-bold tracking-wide">
-                    ⭐ MOST POPULAR
-                  </div>
-                )}
-                <div className="p-8">
-                  <h3 className="text-3xl font-bold text-white mb-3">{plan.name}</h3>
-                  <p className="text-gray-300 mb-6 h-12 text-sm">{plan.description}</p>
-                  <div className="mb-8">
-                    <span className="text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">{plan.price}</span>
-                    <span className="text-gray-300 text-lg">{plan.period}</span>
-                  </div>
-                  <button className={`w-full py-4 rounded-xl font-bold mb-8 transition-all duration-300 transform hover:scale-105 ${
-                    plan.highlighted 
-                      ? 'bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white shadow-xl hover:shadow-2xl' 
-                      : 'bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 border border-white/30'
-                  }`}>
-                    {plan.cta}
-                  </button>
-                  <ul className="space-y-4">
-                    {plan.features.map((feature, fIndex) => (
-                      <li key={fIndex} className="flex items-start">
-                        <CheckCircle className="text-green-400 mr-3 flex-shrink-0 mt-0.5" size={22} />
-                        <span className="text-gray-200">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-16 text-center">
-            <p className="text-gray-200 mb-6 text-lg">Not sure which plan is right for you?</p>
-            <button className="bg-white/10 backdrop-blur-md text-white px-10 py-4 rounded-xl font-bold border-2 border-white/30 hover:bg-white/20 transition-all duration-300 hover:shadow-xl transform hover:scale-105">
-              Contact Us for Custom Pricing
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" data-animate className={`py-24 relative overflow-hidden transition-opacity duration-1000 ${visibleSections.has('about') ? 'animate-in' : 'opacity-0'}`}>
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="inline-block mb-4 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white font-semibold text-sm border border-white/20 shadow-xl">
-                🏢 About Us
-              </div>
-              <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-2xl">
-                Powered by Innovation
-              </h2>
-            </div>
-            
-            <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-10 shadow-2xl border border-white/20">
-              <p className="text-xl text-white mb-6 leading-relaxed">
-                WorkFlow Pro is developed and maintained by <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Orvexa Softech Pvt Ltd</span>, 
-                a joint venture between Blazing Render Creation Hub LLP and LVC Legalvala Consultancy Services LLP.
-              </p>
-              <p className="text-lg text-gray-200 mb-8 leading-relaxed">
-                We combine cutting-edge technology with deep industry expertise to deliver HRMS solutions that truly understand 
-                your business needs. Our mission is to make workforce management effortless, allowing you to focus on what matters most - growing your business.
-              </p>
-              
-              <div className="grid md:grid-cols-3 gap-6 mt-10">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg text-center hover:shadow-xl transition-all hover:bg-white/15 border border-white/20">
-                  <Shield className="text-blue-400 mx-auto mb-3" size={40} />
-                  <h4 className="font-bold text-white text-lg mb-2">Trusted & Secure</h4>
-                  <p className="text-gray-300 text-sm">Bank-grade security</p>
-                </div>
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg text-center hover:shadow-xl transition-all hover:bg-white/15 border border-white/20">
-                  <Users className="text-indigo-400 mx-auto mb-3" size={40} />
-                  <h4 className="font-bold text-white text-lg mb-2">10,000+ Users</h4>
-                  <p className="text-gray-300 text-sm">Happy customers</p>
-                </div>
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg text-center hover:shadow-xl transition-all hover:bg-white/15 border border-white/20">
-                  <TrendingUp className="text-purple-400 mx-auto mb-3" size={40} />
-                  <h4 className="font-bold text-white text-lg mb-2">99.9% Uptime</h4>
-                  <p className="text-gray-300 text-sm">Always available</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" data-animate className={`py-24 relative overflow-hidden transition-opacity duration-1000 ${visibleSections.has('contact') ? 'animate-in' : 'opacity-0'}`}>
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <div className="inline-block mb-4 px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full text-white font-semibold text-sm border border-white/20">
-              📞 Get In Touch
-            </div>
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 text-white drop-shadow-2xl">
-              Ready to Transform Your HR?
-            </h2>
-            <p className="text-xl text-gray-200 max-w-2xl mx-auto">
-              Join thousands of companies already using WorkFlow Pro to streamline their workforce management
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            {/* Contact Form */}
-            <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
-              <h3 className="text-3xl font-bold mb-6 text-white">Send Us a Message</h3>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-200">Your Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400 transition backdrop-blur-sm"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-200">Email Address</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400 transition backdrop-blur-sm"
-                    placeholder="john@company.com"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-200">Company Name</label>
-                  <input
-                    type="text"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400 transition backdrop-blur-sm"
-                    placeholder="Your Company"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-200">Message</label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    required
-                    rows="4"
-                    className="w-full px-4 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400 transition resize-none backdrop-blur-sm"
-                    placeholder="Tell us about your requirements..."
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-4 rounded-xl font-bold hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
-                >
-                  Send Message
-                  <Send size={20} />
-                </button>
-              </form>
-            </div>
-
-            {/* Contact Info */}
-            <div className="space-y-8">
-              <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
-                <h3 className="text-3xl font-bold mb-6 text-white">Contact Information</h3>
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <MapPin className="text-indigo-300" size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-lg mb-1 text-white">Visit Us</h4>
-                      <p className="text-gray-300">Chennai, Tamil Nadu, India</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Mail className="text-blue-300" size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-lg mb-1 text-white">Email Us</h4>
-                      <p className="text-gray-300">contact@workflowpro.com</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
-                <h3 className="text-2xl font-bold mb-4 text-white">Why Choose WorkFlow Pro?</h3>
-                <ul className="space-y-3 text-gray-200">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="text-green-400 flex-shrink-0" size={20} />
-                    <span>14-day free trial, no credit card required</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="text-green-400 flex-shrink-0" size={20} />
-                    <span>Implementation support included</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="text-green-400 flex-shrink-0" size={20} />
-                    <span>Dedicated account manager for Pro+ plans</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="text-green-400 flex-shrink-0" size={20} />
-                    <span>24/7 customer support</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="text-center">
-                <button className="bg-white/20 backdrop-blur-md text-white px-10 py-4 rounded-xl font-bold hover:shadow-2xl transition-all duration-300 hover:scale-105 inline-flex items-center gap-2 border border-white/30 hover:bg-white/30">
-                  Start Your Free Trial
-                  <ArrowRight size={20} />
-                </button>
-                <p className="mt-4 text-gray-300 text-sm">Get started in less than 2 minutes</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-slate-950/50 backdrop-blur-lg text-gray-300 py-16 border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            <div>
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
-                  <span className="text-white font-bold text-2xl">W</span>
-                </div>
-                <span className="text-2xl font-bold text-white">WorkFlow Pro</span>
-              </div>
-              <p className="text-sm leading-relaxed">Streamline your workforce management with cutting-edge HRMS solutions.</p>
-            </div>
-            <div>
-              <h4 className="text-white font-bold mb-6 text-lg">Product</h4>
-              <ul className="space-y-3 text-sm">
-                <li><a href="#features" onClick={(e) => smoothScroll(e, 'features')} className="hover:text-white transition">Features</a></li>
-                <li><a href="#pricing" onClick={(e) => smoothScroll(e, 'pricing')} className="hover:text-white transition">Pricing</a></li>
-                <li><a href="#" className="hover:text-white transition">Demo</a></li>
-                <li><a href="#" className="hover:text-white transition">API Docs</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-white font-bold mb-6 text-lg">Company</h4>
-              <ul className="space-y-3 text-sm">
-                <li><a href="#about" onClick={(e) => smoothScroll(e, 'about')} className="hover:text-white transition">About</a></li>
-                <li><a href="#contact" onClick={(e) => smoothScroll(e, 'contact')} className="hover:text-white transition">Contact</a></li>
-                <li><a href="#" className="hover:text-white transition">Careers</a></li>
-                <li><a href="#" className="hover:text-white transition">Blog</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-white font-bold mb-6 text-lg">Legal</h4>
-              <ul className="space-y-3 text-sm">
-                <li><a href="#" className="hover:text-white transition">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white transition">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-white transition">Cookie Policy</a></li>
-                <li><a href="#" className="hover:text-white transition">GDPR</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-white/10 pt-8">
-            <div className="text-center">
-              <p className="text-sm">© 2024 Orvexa Softech Pvt Ltd. All rights reserved.</p>
-              <p className="mt-2 text-gray-500 text-xs">A joint venture of Blazing Render Creation Hub LLP & LVC Legalvala Consultancy Services LLP</p>
-            </div>
-          </div>
-        </div>
-      </footer>
+        <Footer />
+      </div>
     </div>
   );
 }
