@@ -135,12 +135,19 @@ function Nav({ mobileOpen, setMobileOpen, scrolled, onNavClick }) {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         
         {/* Logo */}
-        <div className="flex items-center gap-2 font-bold text-xl tracking-tighter text-white">
-          {/* <div className="w-8 h-8 bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-purple-500/30">
-            <Zap size={18} fill="currentColor" />
-          </div> */}
-          Quantacel
-        </div>
+        <div 
+  className="flex items-center cursor-pointer"
+  onClick={() => {
+    document.getElementById("hero")?.scrollIntoView({ behavior: "smooth" });
+  }}
+>
+  <img 
+    src="/logo/logo1.svg"
+    alt="Quantacel Logo"
+    className="h-10 w-auto object-contain"
+  />
+</div>
+
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8">
@@ -196,7 +203,7 @@ function Hero({ calculateSavings, onCTAClick }) {
   const scrollingLogos = [...logoFiles, ...logoFiles, ...logoFiles]; 
 
   return (
-    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+    <section id="hero" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
       {/* Background Glow (The Pink Arch) */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-fuchsia-600/20 blur-[120px] rounded-full pointer-events-none" />
 
@@ -230,7 +237,7 @@ function Hero({ calculateSavings, onCTAClick }) {
 
         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed mb-10">
           Streamline your business's financial management with our intuitive, 
-          scalable SaaS platform. Designed for U.S. enterprises to automate 70% of admin.
+          scalable SaaS platform. Designed for Indian enterprises to automate 70% of admin.
         </p>
 
         {/* CTA Button */}
@@ -271,7 +278,7 @@ function Hero({ calculateSavings, onCTAClick }) {
                 </div>
                 <ArrowRight size={14} className="text-gray-500" />
               </div>
-              <div className="text-2xl font-bold text-white text-left mt-2">$1,570,090.00</div>
+              <div className="text-2xl font-bold text-white text-left mt-2">₹15,70,090.00</div>
               <div className="mt-2 w-full bg-white/10 h-1 rounded-full overflow-hidden">
                 <div className="bg-green-500 w-[70%] h-full rounded-full"></div>
               </div>
@@ -292,7 +299,7 @@ function Hero({ calculateSavings, onCTAClick }) {
               {/* Body of App */}
               <div className="p-8 pt-24 text-left">
                 <div className="text-sm text-gray-400 mb-2">Available Balance</div>
-                <div className="text-4xl md:text-5xl font-bold text-white tracking-tight">$14,090,090.00</div>
+                <div className="text-4xl md:text-5xl font-bold text-white tracking-tight">₹1,40,90,090.00</div>
                 <div className="inline-flex items-center gap-1 mt-4 px-2 py-1 rounded bg-green-500/20 text-green-400 text-xs font-medium">
                   <TrendingUp size={12} /> +12.5% this month
                 </div>
@@ -306,7 +313,7 @@ function Hero({ calculateSavings, onCTAClick }) {
                              <div className="w-16 h-2 bg-white/10 rounded"></div>
                            </div>
                         </div>
-                        <div className="text-white font-medium">$5,200.00</div>
+                        <div className="text-white font-medium">₹5,200.00</div>
                      </div>
                    ))}
                 </div>
@@ -363,7 +370,7 @@ function FeatureGrid({ featureDeck, visibleSections }) {
     <section 
       id="features" 
       data-section 
-      className={`py-24 px-6 lg:px-8 relative z-10 transition-all duration-1000 ${visibleSections.has('features') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+      className={`py-2 px-6 lg:px-8 relative z-10 transition-all duration-1000 ${visibleSections.has('features') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
@@ -397,7 +404,7 @@ function FeatureGrid({ featureDeck, visibleSections }) {
               <div className="absolute inset-[-1000%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,rgba(217,70,239,0.5)_50%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-[spin_4s_linear_infinite] blur-[2px]" />
               
               {/* Card Content */}
-              <div className="relative h-full bg-[#0A0118] rounded-[31px] p-8 border border-white/10 group-hover:border-transparent transition-colors duration-300 flex flex-col">
+              <div className="relative h-full bg-[#0e0d0f] rounded-[31px] p-8 border border-white/10 group-hover:border-transparent transition-colors duration-300 flex flex-col">
                 
                 {/* Inner Content Glow Effect */}
                 <div className="absolute -right-10 -top-10 w-32 h-32 bg-purple-500/10 blur-[50px] rounded-full group-hover:bg-purple-500/20 transition-all duration-500"></div>
@@ -566,18 +573,42 @@ function Footer() {
   return (
     <footer className="border-t border-white/10 bg-[#020202] py-12 relative z-10">
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center gap-6">
-        <div className="flex items-center gap-2 font-bold text-xl text-white">
-          {/* <div className="w-8 h-8 bg-gradient-to-br from-fuchsia-600 to-purple-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-purple-500/20">
-            <Zap size={18} fill="currentColor" />
-          </div> */}
-          Quantacel
+        <div className="flex items-center gap-2 font-bold text-xl tracking-tighter text-white">
+          <div className="flex items-center">
+            <img 
+              src="/logo/logo1.svg"
+              alt="Quantacel Logo"
+              className="h-12 w-auto object-contain"
+            />
+          </div>
+
+          
         </div>
+
         <p className="text-gray-500 text-sm max-w-2xl leading-relaxed">
           Quantacel is AI driven HRMS software made by <strong>Orvexa Softtech Private Limited</strong>, 
-          which is a joint venture company with collaboration of <strong>Blazing Render Creation Hub LLP</strong> and <strong>LVCLegalVala Consultancy LLP</strong>.
+          which is a joint venture company with collaboration of 
+          <a 
+            href="https://www.thebrchub.tech" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-fuchsia-400 hover:text-fuchsia-300 font-semibold"
+          >
+            {" "}Blazing Render Creation Hub LLP
+          </a> 
+          {" "}and{" "}
+          <a 
+            href="https://www.legalvala.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-fuchsia-400 hover:text-fuchsia-300 font-semibold"
+          >
+            LVCLegalVala Consultancy LLP
+          </a>.
         </p>
+
         <p className="text-gray-600 text-xs">
-          © 2025 Orvexa Softtech Pvt Ltd. All rights reserved.
+          © 2025 Orvexa Softech Pvt Ltd. All rights reserved.
         </p>
       </div>
     </footer>
@@ -599,14 +630,57 @@ export default function LandingPage() {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', phone: '', message: '' });
 
   // Inject styles for animation
-  useEffect(() => {
-    const styleSheet = document.createElement("style");
-    styleSheet.innerText = globalStyles;
-    document.head.appendChild(styleSheet);
-    return () => {
-      document.head.removeChild(styleSheet);
-    };
-  }, []);
+ // Inject global fonts + animation styles
+useEffect(() => {
+  // 1) Preconnect to speed up font loading
+  const preconnect1 = document.createElement('link');
+  preconnect1.rel = 'preconnect';
+  preconnect1.href = 'https://fonts.googleapis.com';
+
+  const preconnect2 = document.createElement('link');
+  preconnect2.rel = 'preconnect';
+  preconnect2.href = 'https://fonts.gstatic.com';
+  preconnect2.crossOrigin = 'anonymous';
+
+  // 2) Load Google Fonts stylesheet
+  const fontSheet = document.createElement('link');
+  fontSheet.rel = 'stylesheet';
+  fontSheet.href =
+    'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap';
+
+  // 3) Add your global styles (without @import)
+  const styleSheet = document.createElement('style');
+  styleSheet.innerText = `
+    :root {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    html, body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      margin: 0;
+    }
+    @keyframes infinite-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .animate-infinite-scroll {
+      animation: infinite-scroll 30s linear infinite;
+    }
+  `;
+
+  // Append everything
+  document.head.appendChild(preconnect1);
+  document.head.appendChild(preconnect2);
+  document.head.appendChild(fontSheet);
+  document.head.appendChild(styleSheet);
+
+  // Cleanup when component unmounts
+  return () => {
+    preconnect1.remove();
+    preconnect2.remove();
+    fontSheet.remove();
+    styleSheet.remove();
+  };
+}, []);
 
   // Scroll handler for navbar and animations
   useEffect(() => {
