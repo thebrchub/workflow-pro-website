@@ -586,7 +586,7 @@ function Footer() {
         </div>
 
         <p className="text-gray-500 text-sm max-w-2xl leading-relaxed">
-          Quantacel is AI driven HRMS software made by <strong>Orvexa Softtech Private Limited</strong>, 
+          Quantacel is AI driven HRMS software made by <strong>Orvexa Softech Private Limited</strong>, 
           which is a joint venture company with collaboration of 
           <a 
             href="https://www.thebrchub.tech" 
