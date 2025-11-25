@@ -546,7 +546,7 @@ function CTAContact({ formData, setFormData, handleSubmit }) {
                     <h2 className="text-4xl font-bold text-white mb-6">Ready to modernize your HR?</h2>
                     <p className="text-gray-400 mb-8">Join 2,000+ companies automating their workforce management.</p>
                     <div className="space-y-4">
-                       <div className="flex items-center gap-4 text-gray-300"><Mail size={20} className="text-fuchsia-500"/> <span>hello@quantacel.ai</span></div>
+                       <div className="flex items-center gap-4 text-gray-300"><Mail size={20} className="text-fuchsia-500"/> <span>orvexasoftech@gmail.com</span></div>
                        {/* <div className="flex items-center gap-4 text-gray-300"><Phone size={20} className="text-fuchsia-500"/> <span>+1 (555) 123-4567</span></div> */}
                        <div className="flex items-center gap-4 text-gray-300"><MapPin size={20} className="text-fuchsia-500"/> <span>Agra, India</span></div>
                     </div>
