@@ -548,7 +548,7 @@ function CTAContact({ formData, setFormData, handleSubmit }) {
                     <div className="space-y-4">
                        <div className="flex items-center gap-4 text-gray-300"><Mail size={20} className="text-fuchsia-500"/> <span>orvexasoftech@gmail.com</span></div>
                        {/* <div className="flex items-center gap-4 text-gray-300"><Phone size={20} className="text-fuchsia-500"/> <span>+1 (555) 123-4567</span></div> */}
-                       <div className="flex items-center gap-4 text-gray-300"><MapPin size={20} className="text-fuchsia-500"/> <span>Agra, India</span></div>
+                       <div className="flex items-center gap-4 text-gray-300"><MapPin size={20} className="text-fuchsia-500"/> <span>131 Jawahar Puram, Albatiya Road, Shahganj, Agra, Uttar Pradesh, India - 282010</span></div>
                     </div>
                  </div>
                  
