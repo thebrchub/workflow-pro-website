@@ -135,7 +135,7 @@ function Nav({ mobileOpen, setMobileOpen, scrolled, onNavClick }) {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         
         {/* Logo */}
-        <div 
+        {/* <div 
   className="flex items-center cursor-pointer"
   onClick={() => {
     document.getElementById("hero")?.scrollIntoView({ behavior: "smooth" });
@@ -143,10 +143,11 @@ function Nav({ mobileOpen, setMobileOpen, scrolled, onNavClick }) {
 >
   <img 
     src="/logo/logo1.svg"
-    alt="Quantacel Logo"
+    alt="Orvexa Logo"
     className="h-10 w-auto object-contain"
   />
-</div>
+</div> */}
+Orvexa Softech Private Limited
 
 
         {/* Desktop Links */}
@@ -546,7 +547,7 @@ function CTAContact({ formData, setFormData, handleSubmit }) {
                     <p className="text-gray-400 mb-8">Join 2,000+ companies automating their workforce management.</p>
                     <div className="space-y-4">
                        <div className="flex items-center gap-4 text-gray-300"><Mail size={20} className="text-fuchsia-500"/> <span>hello@quantacel.ai</span></div>
-                       <div className="flex items-center gap-4 text-gray-300"><Phone size={20} className="text-fuchsia-500"/> <span>+1 (555) 123-4567</span></div>
+                       {/* <div className="flex items-center gap-4 text-gray-300"><Phone size={20} className="text-fuchsia-500"/> <span>+1 (555) 123-4567</span></div> */}
                        <div className="flex items-center gap-4 text-gray-300"><MapPin size={20} className="text-fuchsia-500"/> <span>Agra, India</span></div>
                     </div>
                  </div>
@@ -574,20 +575,18 @@ function Footer() {
     <footer className="border-t border-white/10 bg-[#020202] py-12 relative z-10">
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center gap-6">
         <div className="flex items-center gap-2 font-bold text-xl tracking-tighter text-white">
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             <img 
               src="/logo/logo1.svg"
               alt="Quantacel Logo"
               className="h-12 w-auto object-contain"
             />
-          </div>
-
-          
+          </div> */}
+          Orvexa Softech Private Limited
         </div>
 
         <p className="text-gray-500 text-sm max-w-2xl leading-relaxed">
-          Quantacel is AI driven HRMS software made by <strong>Orvexa Softech Private Limited</strong>, 
-          which is a joint venture company with collaboration of 
+           <strong>Orvexa Softech Private Limited</strong> is a joint venture company with collaboration of 
           <a 
             href="https://www.thebrchub.tech" 
             target="_blank" 
