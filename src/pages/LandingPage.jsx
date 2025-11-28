@@ -3,7 +3,9 @@ import {
   Zap, Shield, BarChart3, Users, Clock, Globe, 
   Menu, X, ChevronRight, ArrowRight, Check, 
   CreditCard, TrendingUp, Activity, CheckCircle, Star,
-  Mail, Phone, MapPin, Twitter, Linkedin, Github
+  Mail, Phone, MapPin, Twitter, Linkedin, Github,
+  UserPlus, Database, Calendar, FileText, Shuffle,
+  Smartphone, Bell, LayoutDashboard, BrainCircuit
 } from 'lucide-react';
 
 /* -------------------------------------------------------------------------- */
@@ -48,9 +50,7 @@ function Starfield() {
     let animationFrameId;
     let stars = [];
     const numStars = 150;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
+    
     // Set canvas size
     const handleResize = () => {
       canvas.width = window.innerWidth;
@@ -62,8 +62,8 @@ function Starfield() {
     // Initialize stars
     for (let i = 0; i < numStars; i++) {
       stars.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
         radius: Math.random() * 1.2,
         alpha: Math.random(),
         speed: Math.random() * 0.2 + 0.05
@@ -102,7 +102,7 @@ function Starfield() {
   return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none" />;
 }
 
-/* --- Background Effects (Updated to include Canvas) --- */
+/* --- Background Effects --- */
 function BackgroundEffects() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -135,20 +135,14 @@ function Nav({ mobileOpen, setMobileOpen, scrolled, onNavClick }) {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         
         {/* Logo */}
-        {/* <div 
-  className="flex items-center cursor-pointer"
-  onClick={() => {
-    document.getElementById("hero")?.scrollIntoView({ behavior: "smooth" });
-  }}
->
-  <img 
-    src="/logo/logo1.svg"
-    alt="Orvexa Logo"
-    className="h-10 w-auto object-contain"
-  />
-</div> */}
-Orvexa Softech Private Limited
-
+        <div 
+          className="flex items-center cursor-pointer font-bold text-xl tracking-tight"
+          onClick={() => {
+            document.getElementById("hero")?.scrollIntoView({ behavior: "smooth" });
+          }}
+        >
+          Orvexa Softech Private Limited
+        </div>
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8">
@@ -199,8 +193,8 @@ Orvexa Softech Private Limited
 
 /* --- Hero Section --- */
 function Hero({ calculateSavings, onCTAClick }) {
-  // Logos configuration
-  const logoFiles = [7, 8, 9, 10, 11, 12];
+  // Logos configuration (Placeholder IDs)
+  const logoFiles = [1, 2, 3, 4, 5, 6];
   const scrollingLogos = [...logoFiles, ...logoFiles, ...logoFiles]; 
 
   return (
@@ -218,7 +212,7 @@ function Hero({ calculateSavings, onCTAClick }) {
             
             {/* Animated Border Wrapper */}
             <div className="relative rounded-full p-[1px] overflow-hidden">
-              {/* Soft Spinning Conic Gradient (Reduced opacity for "not harsh" look) */}
+              {/* Soft Spinning Conic Gradient */}
               <div className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,rgba(217,70,239,0.7)_50%,transparent_100%)] opacity-70" />
               
               {/* Badge Content */}
@@ -327,7 +321,6 @@ function Hero({ calculateSavings, onCTAClick }) {
         </div>
 
         {/* --- Infinite Moving Logos Section --- */}
-        {/* --- Infinite Moving Logos Section (UPDATED) --- */}
         <div className="mt-32 flex flex-col items-center gap-8 w-full overflow-hidden">
           <div className="px-4 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-gray-400 backdrop-blur-sm z-10 relative">
             Trusted over 2k+ companies
@@ -343,18 +336,10 @@ function Hero({ calculateSavings, onCTAClick }) {
               {scrollingLogos.map((logoNum, i) => (
                 <div 
                   key={i} 
-                  className="flex items-center justify-center px-8 py-4 rounded-full border border-white/10 bg-black/20 hover:bg-white/5 transition-colors min-w-max"
+                  className="flex items-center justify-center px-8 py-4 rounded-full border border-white/10 bg-black/20 hover:bg-white/5 transition-colors min-w-max text-gray-500 font-bold"
                 >
-                   <img 
-                      src={`/logo/logos/${logoNum}.png`} 
-                      alt={`Partner ${logoNum}`} 
-                      className="h-16 w-auto opacity-80 hover:opacity-100 transition-opacity" 
-                      onError={(e) => {
-                        // Helps debug if the path is still wrong, logs to console instead of breaking layout
-                        console.error(`Could not load image: ${e.target.src}`);
-                        // e.target.style.display = 'none'; // Optional: hide broken images
-                      }} 
-                   />
+                  {/* Placeholder for Logos since external images might break */}
+                  PARTNER {logoNum}
                 </div>
               ))}
             </div>
@@ -365,8 +350,13 @@ function Hero({ calculateSavings, onCTAClick }) {
   );
 }
 
-/* --- Feature Grid --- */
+/* --- Feature Grid (UPDATED with Tabs) --- */
 function FeatureGrid({ featureDeck, visibleSections }) {
+  const [activeTab, setActiveTab] = useState("HR Operations");
+  const categories = ["HR Operations", "Payroll & Finance", "Analytics & AI"];
+
+  const filteredFeatures = featureDeck.filter(f => f.category === activeTab);
+
   return (
     <section 
       id="features" 
@@ -375,7 +365,7 @@ function FeatureGrid({ featureDeck, visibleSections }) {
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-16">
+        <div className="flex flex-col items-center text-center mb-12">
           <div className="flex items-center gap-4 mb-6">
             <div className="h-[1px] w-12 md:w-24 bg-gradient-to-r from-transparent to-white/20"></div>
             <div className="px-4 py-1 rounded-full border border-white/10 bg-white/5 text-xs font-medium text-gray-400 uppercase tracking-wider shadow-inner">
@@ -385,23 +375,39 @@ function FeatureGrid({ featureDeck, visibleSections }) {
           </div>
 
           <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 tracking-tight">
-            How our platform <br className="hidden md:block" />
-            makes your <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">workflow easier</span>
+            Comprehensive <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">HR Suite</span>
           </h2>
           
           <p className="text-lg text-gray-400 max-w-2xl font-light">
-             Eliminate manual bottlenecks with autonomous agents that handle the heavy lifting, keeping your data audit-ready.
+             From onboarding to offboarding, we automate every step of the employee lifecycle.
           </p>
         </div>
 
-        {/* Grid with Soft Spinning Border on Hover */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featureDeck.map((item, i) => (
-            <div 
-              key={i} 
-              className="group relative rounded-[32px] p-[1px] overflow-hidden transition-all duration-300 hover:-translate-y-1"
+        {/* Category Tabs */}
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          {categories.map(cat => (
+            <button
+              key={cat}
+              onClick={() => setActiveTab(cat)}
+              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${
+                activeTab === cat 
+                  ? 'bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.3)]' 
+                  : 'bg-white/5 text-gray-400 border-white/10 hover:border-white/30 hover:text-white'
+              }`}
             >
-              {/* Spinning Gradient Background (Revealed on Hover, Softened) */}
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Grid with Soft Spinning Border on Hover */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[400px]">
+          {filteredFeatures.map((item, i) => (
+            <div 
+              key={item.title} 
+              className="group relative rounded-[32px] p-[1px] overflow-hidden transition-all duration-300 hover:-translate-y-1 animate-[fadeIn_0.5s_ease-out]"
+            >
+              {/* Spinning Gradient Background (Revealed on Hover) */}
               <div className="absolute inset-[-1000%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,rgba(217,70,239,0.5)_50%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-[spin_4s_linear_infinite] blur-[2px]" />
               
               {/* Card Content */}
@@ -505,7 +511,6 @@ function Pricing({ pricingPlans, pricingToggle, setPricingToggle, employeeCount,
         </div>
 
         {/* Pricing Cards */}
-        {/* Pricing Cards */}
         <div className="grid md:grid-cols-3 gap-8">
           {pricingPlans.map((plan, i) => (
             <div key={i} className={`relative group flex flex-col p-8 rounded-3xl border transition-all duration-300 ${plan.popular ? 'bg-white/[0.08] border-purple-500/50 shadow-[0_0_50px_rgba(168,85,247,0.15)] scale-105 z-10' : 'bg-white/[0.02] border-white/10 hover:border-white/20 hover:bg-white/[0.04]'}`}>
@@ -538,33 +543,32 @@ function Pricing({ pricingPlans, pricingToggle, setPricingToggle, employeeCount,
 function CTAContact({ formData, setFormData, handleSubmit }) {
    return (
      <section id="contact" data-section className="py-24 px-6 relative z-10">
-        <div className="max-w-5xl mx-auto">
-           <div className="relative rounded-[40px] overflow-hidden border border-white/10 bg-[#0A0118]">
-              <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-900/20 to-purple-900/20"></div>
-              <div className="grid md:grid-cols-2 relative z-10">
-                 <div className="p-10 md:p-16 flex flex-col justify-center">
-                    <h2 className="text-4xl font-bold text-white mb-6">Ready to modernize your HR?</h2>
-                    <p className="text-gray-400 mb-8">Join 2,000+ companies automating their workforce management.</p>
-                    <div className="space-y-4">
-                       <div className="flex items-center gap-4 text-gray-300"><Mail size={20} className="text-fuchsia-500"/> <span>orvexasoftech@gmail.com</span></div>
-                       {/* <div className="flex items-center gap-4 text-gray-300"><Phone size={20} className="text-fuchsia-500"/> <span>+1 (555) 123-4567</span></div> */}
-                       <div className="flex items-center gap-4 text-gray-300"><MapPin size={20} className="text-fuchsia-500"/> <span>131 Jawahar Puram, Albatiya Road, Shahganj, Agra, Uttar Pradesh, India - 282010</span></div>
-                    </div>
-                 </div>
-                 
-                 <div className="p-10 md:p-16 bg-white/5 backdrop-blur-sm border-l border-white/10">
-                    <div className="space-y-4">
-                       <div className="grid grid-cols-2 gap-4">
-                          <input type="text" placeholder="First Name" className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 transition-colors" value={formData.firstName} onChange={e=>setFormData({...formData, firstName:e.target.value})} />
-                          <input type="text" placeholder="Last Name" className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 transition-colors" value={formData.lastName} onChange={e=>setFormData({...formData, lastName:e.target.value})} />
-                       </div>
-                       <input type="email" placeholder="Work Email" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 transition-colors" value={formData.email} onChange={e=>setFormData({...formData, email:e.target.value})} />
-                       <button onClick={handleSubmit} className="w-full bg-white text-black py-3 rounded-xl font-bold hover:bg-gray-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.2)]">Request Demo</button>
-                    </div>
-                 </div>
-              </div>
-           </div>
-        </div>
+       <div className="max-w-5xl mx-auto">
+          <div className="relative rounded-[40px] overflow-hidden border border-white/10 bg-[#0A0118]">
+             <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-900/20 to-purple-900/20"></div>
+             <div className="grid md:grid-cols-2 relative z-10">
+                <div className="p-10 md:p-16 flex flex-col justify-center">
+                   <h2 className="text-4xl font-bold text-white mb-6">Ready to modernize your HR?</h2>
+                   <p className="text-gray-400 mb-8">Join 2,000+ companies automating their workforce management.</p>
+                   <div className="space-y-4">
+                      <div className="flex items-center gap-4 text-gray-300"><Mail size={20} className="text-fuchsia-500"/> <span>orvexasoftech@gmail.com</span></div>
+                      <div className="flex items-center gap-4 text-gray-300"><MapPin size={20} className="text-fuchsia-500"/> <span>131 Jawahar Puram, Albatiya Road, Shahganj, Agra, Uttar Pradesh, India - 282010</span></div>
+                   </div>
+                </div>
+                
+                <div className="p-10 md:p-16 bg-white/5 backdrop-blur-sm border-l border-white/10">
+                   <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                         <input type="text" placeholder="First Name" className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 transition-colors" value={formData.firstName} onChange={e=>setFormData({...formData, firstName:e.target.value})} />
+                         <input type="text" placeholder="Last Name" className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 transition-colors" value={formData.lastName} onChange={e=>setFormData({...formData, lastName:e.target.value})} />
+                      </div>
+                      <input type="email" placeholder="Work Email" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 transition-colors" value={formData.email} onChange={e=>setFormData({...formData, email:e.target.value})} />
+                      <button onClick={handleSubmit} className="w-full bg-white text-black py-3 rounded-xl font-bold hover:bg-gray-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.2)]">Request Demo</button>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
      </section>
    );
 }
@@ -575,13 +579,6 @@ function Footer() {
     <footer className="border-t border-white/10 bg-[#020202] py-12 relative z-10">
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center gap-6">
         <div className="flex items-center gap-2 font-bold text-xl tracking-tighter text-white">
-          {/* <div className="flex items-center">
-            <img 
-              src="/logo/logo1.svg"
-              alt="Quantacel Logo"
-              className="h-12 w-auto object-contain"
-            />
-          </div> */}
           Orvexa Softech Private Limited
         </div>
 
@@ -591,9 +588,9 @@ function Footer() {
             href="https://www.thebrchub.tech" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-fuchsia-400 hover:text-fuchsia-300 font-semibold"
+            className="text-fuchsia-400 hover:text-fuchsia-300 font-semibold ml-1"
           >
-            {" "}Blazing Render Creation Hub LLP
+            Blazing Render Creation Hub LLP
           </a> 
           {" "}and{" "}
           <a 
@@ -629,57 +626,60 @@ export default function LandingPage() {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', phone: '', message: '' });
 
   // Inject styles for animation
- // Inject global fonts + animation styles
-useEffect(() => {
-  // 1) Preconnect to speed up font loading
-  const preconnect1 = document.createElement('link');
-  preconnect1.rel = 'preconnect';
-  preconnect1.href = 'https://fonts.googleapis.com';
+  useEffect(() => {
+    // 1) Preconnect to speed up font loading
+    const preconnect1 = document.createElement('link');
+    preconnect1.rel = 'preconnect';
+    preconnect1.href = 'https://fonts.googleapis.com';
 
-  const preconnect2 = document.createElement('link');
-  preconnect2.rel = 'preconnect';
-  preconnect2.href = 'https://fonts.gstatic.com';
-  preconnect2.crossOrigin = 'anonymous';
+    const preconnect2 = document.createElement('link');
+    preconnect2.rel = 'preconnect';
+    preconnect2.href = 'https://fonts.gstatic.com';
+    preconnect2.crossOrigin = 'anonymous';
 
-  // 2) Load Google Fonts stylesheet
-  const fontSheet = document.createElement('link');
-  fontSheet.rel = 'stylesheet';
-  fontSheet.href =
-    'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap';
+    // 2) Load Google Fonts stylesheet
+    const fontSheet = document.createElement('link');
+    fontSheet.rel = 'stylesheet';
+    fontSheet.href =
+      'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap';
 
-  // 3) Add your global styles (without @import)
-  const styleSheet = document.createElement('style');
-  styleSheet.innerText = `
-    :root {
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    }
-    html, body {
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-      margin: 0;
-    }
-    @keyframes infinite-scroll {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
-    }
-    .animate-infinite-scroll {
-      animation: infinite-scroll 30s linear infinite;
-    }
-  `;
+    // 3) Add your global styles (without @import)
+    const styleSheet = document.createElement('style');
+    styleSheet.innerText = `
+      :root {
+        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      }
+      html, body {
+        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        margin: 0;
+      }
+      @keyframes infinite-scroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+      .animate-infinite-scroll {
+        animation: infinite-scroll 30s linear infinite;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    `;
 
-  // Append everything
-  document.head.appendChild(preconnect1);
-  document.head.appendChild(preconnect2);
-  document.head.appendChild(fontSheet);
-  document.head.appendChild(styleSheet);
+    // Append everything
+    document.head.appendChild(preconnect1);
+    document.head.appendChild(preconnect2);
+    document.head.appendChild(fontSheet);
+    document.head.appendChild(styleSheet);
 
-  // Cleanup when component unmounts
-  return () => {
-    preconnect1.remove();
-    preconnect2.remove();
-    fontSheet.remove();
-    styleSheet.remove();
-  };
-}, []);
+    // Cleanup when component unmounts
+    return () => {
+      preconnect1.remove();
+      preconnect2.remove();
+      fontSheet.remove();
+      styleSheet.remove();
+    };
+  }, []);
 
   // Scroll handler for navbar and animations
   useEffect(() => {
@@ -724,15 +724,26 @@ useEffect(() => {
     setMobileMenuOpen(false);
   };
 
-  // --- DATA OBJECTS ---
+  // --- UPDATED DATA OBJECTS (15 Features with Categories) ---
 
   const featureDeck = [
-    { icon: Zap, title: "Instant Payroll", desc: "Process thousands of payments in seconds with zero errors." },
-    { icon: Shield, title: "Compliance Guard", desc: "AI monitors local laws and updates policies automatically." },
-    { icon: BarChart3, title: "Smart Analytics", desc: "Predict turnover and engagement trends before they happen." },
-    { icon: Users, title: "Auto-Onboarding", desc: "Generate contracts and setup accounts without lifting a finger." },
-    { icon: Clock, title: "Time Tracking", desc: "Geo-fenced attendance with biometric verification support." },
-    { icon: Globe, title: "Global Hiring", desc: "Hire anyone, anywhere. We handle the taxes and entities." }
+    { icon: UserPlus, title: "Employee Onboarding", desc: "Digital workflows that get new hires productive from day one.", category: "HR Operations" },
+    { icon: Database, title: "Database Management", desc: "Secure, centralized repository for all employee data and history.", category: "HR Operations" },
+    { icon: Calendar, title: "Leave & Attendance", desc: "Automated tracking of leaves, holidays, and daily attendance.", category: "HR Operations" },
+    { icon: Shuffle, title: "Shift Management", desc: "Flexible shift rostering and automated conflict resolution.", category: "HR Operations" },
+    { icon: Smartphone, title: "Self-Service Portal", desc: "Empower employees to view payslips and manage profile data.", category: "HR Operations" },
+    { icon: Bell, title: "Notifications & Workflows", desc: "Intelligent alerts for approvals, birthdays, and policy updates.", category: "HR Operations" },
+
+    { icon: Zap, title: "Payroll Automation", desc: "One-click payroll processing with automated tax calculations.", category: "Payroll & Finance" },
+    { icon: Clock, title: "Time Tracking", desc: "Precise work hour logging with geo-fencing and biometric integration.", category: "Payroll & Finance" },
+    { icon: Shield, title: "Compliance & Docs", desc: "Auto-updated statutory compliance and secure document storage.", category: "Payroll & Finance" },
+    { icon: CreditCard, title: "Expense Management", desc: "Streamlined reimbursement claims with instant receipt scanning.", category: "Payroll & Finance" },
+
+    { icon: TrendingUp, title: "Performance Tracking", desc: "KPI monitoring, goal setting, and regular appraisal cycles.", category: "Analytics & AI" },
+    { icon: BarChart3, title: "Team Analytics", desc: "Deep insights into retention, productivity, and workforce costs.", category: "Analytics & AI" },
+    { icon: Users, title: "Workforce Planning", desc: "Strategic tools to forecast hiring needs and talent gaps.", category: "Analytics & AI" },
+    { icon: LayoutDashboard, title: "Reports & Dashboards", desc: "Customizable visual dashboards for real-time HR metrics.", category: "Analytics & AI" },
+    { icon: BrainCircuit, title: "AI Decision Support", desc: "Predictive analytics for attrition and talent optimization.", category: "Analytics & AI" }
   ];
 
   const testimonials = [
